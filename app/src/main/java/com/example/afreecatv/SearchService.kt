@@ -7,5 +7,5 @@ import retrofit2.http.Query
 
 interface SearchService {
     @GET("/search/repositories")
-    fun searchRepositories(@Query("q") q: String) : Call<MainRvData>
+    fun searchRepositories(@Query("q") q: String, @Query("per_page") per_page : Int,@Query("page") page : Int) : Call<MainRvData>
 }

@@ -23,7 +23,6 @@ class RvAdapter : RecyclerView.Adapter<RvAdapter.ViewHolder>() {
                .into(item_avatar)
             item_full_name.text = data.full_name
             item_language.text = data.language
-            Log.d("re","${item_full_name.text} 2 : ${item_language.text}")
         }
     }
 
