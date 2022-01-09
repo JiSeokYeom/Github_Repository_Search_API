@@ -1,24 +1,20 @@
 package com.example.afreecatv
 
-import android.app.Activity
-import android.content.Context
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.text.Layout
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.annotation.LongDef
-import androidx.annotation.NonNull
-import androidx.core.widget.NestedScrollView
+import androidx.core.view.marginBottom
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var search_btn : ImageButton
@@ -26,14 +22,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var repoList: MutableList<Item>
     private lateinit var adapterRV: RvAdapter
     private lateinit var mainRV : RecyclerView
-    private lateinit var progressBar: ProgressBar
+ //   private lateinit var progressBar: View
     private lateinit var repository : String
-    private val per_page = 10
+    private val PER_PAGE = 10
     private var page = 1
-    private var SW = false
+    private var loading = false
     private lateinit var activity_main : MainActivity
     private val baseUrl = "https://api.github.com"
-    private val service = GithubRepository.getClient(baseUrl)?.create(SearchService::class.java)
+    private val service = RetrofitClient.getClient(baseUrl)?.create(SearchService::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,16 +39,22 @@ class MainActivity : AppCompatActivity() {
         search_btn = findViewById(R.id.btn_search)
         repository_input = findViewById(R.id.repository_input)
         mainRV = findViewById(R.id.main_rv)
-        progressBar = findViewById(R.id.progress_bar)
+       // progressBar = findViewById(R.id.progress_bar)
 
-        progressBar.visibility = View.GONE
+        // 리사이클러뷰 설정
+        mainRV.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        adapterRV = RvAdapter()
+        mainRV.adapter=adapterRV
 
-
+      //  progressBar.visibility = View.GONE
 
         search_btn.setOnClickListener {
             repoList = mutableListOf()
             page = 1
+
             repository = repository_input.text.toString()
+          //  progressBar.visibility = View.VISIBLE
+
             val response = getRepository(repository)
             response.observe(this,{response ->
                 response.items.let {
@@ -62,43 +64,41 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             })
-            adapterRV = RvAdapter()
-            adapterRV.mData = repoList
-            mainRV.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-            mainRV.adapter=adapterRV
 
+            adapterRV.mData = repoList
+           // adapterRV.notifyDataSetChanged()
 
             // EditText 입력값을 비워준다
             repository_input.text.clear()
         }
+
         mainRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter!!.itemCount-1
+                Log.d("몰라","$lastVisibleItemPosition , $itemTotalCount")
+                // 스크롤이 끝에 도달했는지 확인
+                if (!recyclerView.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount && !loading) {
+                    addItem()
+                }
+
+            }
+
+        /*    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                 if(!recyclerView.canScrollVertically(1) && !SW){
+                 if(!recyclerView.canScrollVertically(1) && !loading){
+
                      progressBar.visibility = View.VISIBLE
-
                      addItem()
-            /*        val response = getRepository(repository)
-                    response.observe(activity_main!!,{ response ->
-                        response.items.let {
-                            for(item in it){
-                                repoList.add(item)
-                                Log.d("tt2", it.toString())
-                            }
-                        }
-                    })
-
-                    adapterRV.mData = repoList
-                    var rv = findViewById<RecyclerView>(R.id.main_rv)
-                    rv.apply {
-                        layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-                        adapter = adapterRV
-                    }*/
                 }
-            }
+            }*/
         })
+
 
 
 
@@ -107,15 +107,16 @@ class MainActivity : AppCompatActivity() {
 
     fun getRepository(repository : String) : MutableLiveData<MainRvData> {
         val result : MutableLiveData<MainRvData> = MutableLiveData()
-        val call: Call<MainRvData> = service!!.searchRepositories(repository,per_page, page)
+        val call: Call<MainRvData> = service!!.searchRepositories(repository,PER_PAGE, page)
         Log.d("페이지 테스트","$page")
+       // progressBar.visibility = View.VISIBLE
         call.enqueue(object : Callback<MainRvData> {
             override fun onResponse(call: Call<MainRvData>, response: Response<MainRvData>) {
                 Log.d("onResponse", "onResponse")
                 if (response.code() == 200) {
-                    progressBar.visibility = View.GONE
                     Log.d("response.isSuccessful", "onResponse success")
                     result.value = response.body() as MainRvData
+                    adapterRV.notifyItemRangeInserted((page - 1) * 10, 10)
                     Log.d("tt2", "${response.body()}")
                 } else {
                     Log.d("response.isSuccessful", "onResponse fail")
@@ -131,30 +132,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addItem(){
-        SW = true
-
-        adapterRV = RvAdapter()
-
+        loading = true
+      //  progressBar.visibility = View.VISIBLE
         Handler().postDelayed(Runnable {
             page++
             val response = getRepository(repository)
-            response.observe(activity_main!!,{ response ->
+            response.observe(activity_main,{ response ->
                 response.items.let {
-                    for(item in it){
-                        repoList.add(item)
-                        Log.d("tt2", it.toString())
-                    }
+                        for (item in it) {
+                                repoList.add(item)
+                                Log.d("repoList", repoList.toString())
+                        }
                 }
             })
+            Log.d("개수", repoList.size.toString())
 
-            adapterRV = RvAdapter()
             adapterRV.mData = repoList
-            mainRV.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-            mainRV.adapter=adapterRV
-
-            adapterRV.notifyDataSetChanged()
-            progressBar.visibility = View.GONE
-            SW = false
+            loading = false
         }, 1000)
     }
 }

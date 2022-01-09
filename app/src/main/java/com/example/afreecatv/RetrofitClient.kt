@@ -3,7 +3,7 @@ package com.example.afreecatv
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object GithubRepository {
+object RetrofitClient {
 
     private var retrofitClient : Retrofit? = null
 

@@ -14,23 +14,25 @@
         android:background="#325DCA"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/repository_input"
-            android:layout_width="270dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="15dp"
-            android:background="@null"
-            android:hint="Search..."
-            android:textColorHint="#BDBDBD"
-            android:textSize="18sp" />
+    <EditText
+        android:id="@+id/repository_input"
+        android:layout_width="270dp"
+        android:layout_height="50dp"
+        android:background="@null"
+        android:hint="Search..."
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="15dp"
+        android:textColorHint="#BDBDBD"
+        android:textSize="18sp"
+         />
+
 
         <ImageButton
             android:id="@+id/btn_search"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/search" />
     </LinearLayout>
 
@@ -39,37 +41,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-    <ProgressBar
+
+
+
+   <!-- <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        />-->
 
-   <!-- <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="4dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/main_rv"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                tools:listitem="@layout/main_rv_item"
-                android:nestedScrollingEnabled="false"
-              />
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>-->
 </LinearLayout>
 
 
