@@ -1,6 +1,5 @@
 package com.example.afreecatv
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,20 +11,17 @@ import com.bumptech.glide.Glide
 class RvAdapter : RecyclerView.Adapter<RvAdapter.ViewHolder>() {
     var mData = mutableListOf<Item>()
 
-    private val VIEW_TYPE_ITEM = 0
-    private val VIEW_TYPE_LOADING = 1
-
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
          val item_avatar = itemView.findViewById<ImageView>(R.id.item_avatar)
          val item_full_name = itemView.findViewById<TextView>(R.id.item_full_name)
          val item_language = itemView.findViewById<TextView>(R.id.item_language)
 
         fun setData(data : Item){
-           Glide.with(itemView.context)
-               .load(data.owner.avatar_url)
-               .into(item_avatar)
-            item_full_name.text = data.full_name
-            item_language.text = data.language
+                Glide.with(itemView.context)
+                    .load(data.owner.avatar_url)
+                    .into(item_avatar)
+                item_full_name.text = data.full_name
+                item_language.text = data.language
         }
     }
 
