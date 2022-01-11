@@ -28,9 +28,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var activity_main : MainActivity
     private val baseUrl = "https://api.github.com"
     private val service = RetrofitClient.getClient(baseUrl)?.create(SearchApi::class.java)
-    companion object{
-         var loading = false
-    }
+    private var loading = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
