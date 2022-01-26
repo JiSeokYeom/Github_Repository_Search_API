@@ -1,14 +1,14 @@
-# afreecatv 사전과제  :tophat:
+# Github Repository Search Service  :tophat:
 
-## 과제 설명
+## 어플 설명
 
 ### 
-+ GitHub API를 사용하여 GitHub Repository를 조회하고 리스트를 보여주는 어플리케이션을 만듭니다.
++ GitHub API를 사용하여 GitHub Repository를 조회하고 리스트를 보여주는 어플 입니다.
 + API 명세서와 예시 화면을 참고하여 요구사항을 구현합니다.
 
-### 요구사항
+### 필요한 기능들
 + 검색하고 싶은 Repository를 입력 받고, GitHub Search Repositories API의 응답으로 받아온 데이터를 사용하여 리스트를 표시합니다.
-+ 리스트에 반드시 포함되어야 할 요소는 avatar_url, full_name, language 입니다.
++ 리스트에 반드시 포함되어야 할 요소는 유저아바타(avatar_url), 	Repository명(full_name), 사용한 언어(language) 입니다.
 + 리스트를 상하 스크롤이 가능하도록 표시합니다.
 + 페이징 기능 구현 : 한번에 10개의 데이터를 불러오고 리스트의 마지막에 도달하면 다음 페이지 데이터를 로딩해서 표시해줍니다. 로딩중 일 때 리스트 맨 밑에 로딩바를 활용하여 로딩중임을 알 수 있도록 해야 합니다.
 + 새로 검색을 하면 기존의 리스트는 제거하고, 검색결과에 따른 새로운 리스트를 표시합니다.
@@ -28,7 +28,7 @@
 
 ### 3. Response
 
-- 전체 Response중에, 본 과제에서 사용할 filed는 아래와 같습니다.
+- 전체 Response중에, 사용할 filed는 아래와 같습니다.
 
 | Field | Type | Description |
 | --- | --- | --- |
@@ -48,10 +48,10 @@ API를 사용하기 위해 Retrofit2를 사용한다.
 - 간단한 구현(반복된 작업을 라이브러리 넘겨서 처리)
 - 가독성 (Annotation(애노테이션) 사용으로 코드의 가독성이 뛰어남, 직관적인 설계가 가능)
 - 동기/비동기 쉬운 구현 
-### 요구사항 해결 방법
+### 필요한 기능 구현 방법
 ### 검색하고 싶은 Repository를 입력 받고, GitHub Search Repositories API의 응답으로 받아온 데이터를 사용하여 리스트를 표시합니다.
  activity_main에 Repository를 입력받을 수 있는 EditText / 검색 할 수 있는 ImageButton / 받아온 데이터를 표시해주는 recyclerview / 페이징 기능을 위한 ProgressBar를 삽입해준다.
-### 리스트에 반드시 포함되어야 할 요소는 avatar_url, full_name, language 입니다.
+### 리스트에 반드시 포함되어야 할 요소는 유저아바타(avatar_url), 	Repository명(full_name), 사용한 언어(language) 입니다.
 #### 1. avatar_url, full_name, language이 세가지 요소를 recyclerview에 표시하기 위해 item.xml을 만든다. 여기서 avatar_url은 url형식으로 받기 때문에 Glide 라이브러리를 이용 한다.
 #### 2. 요소들이 담길 Data.class를 작성한다.
 ```
