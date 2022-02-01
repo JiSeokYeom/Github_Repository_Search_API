@@ -1,4 +1,4 @@
-package com.example.afreecatv.retrofit
+package com.example.repositorysearch.retrofit
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

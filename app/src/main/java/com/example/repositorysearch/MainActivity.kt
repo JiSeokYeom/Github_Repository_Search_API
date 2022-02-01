@@ -1,4 +1,4 @@
-package com.example.afreecatv
+package com.example.repositorysearch
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,8 +9,8 @@ import android.widget.*
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.afreecatv.api.SearchApi
-import com.example.afreecatv.retrofit.RetrofitClient
+import com.example.repositorysearch.api.SearchApi
+import com.example.repositorysearch.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

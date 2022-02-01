@@ -1,4 +1,4 @@
-package com.example.afreecatv
+package com.example.repositorysearch
 
 import android.view.LayoutInflater
 import android.view.View

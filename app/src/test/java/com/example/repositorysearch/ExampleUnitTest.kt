@@ -1,4 +1,4 @@
-package com.example.afreecatv
+package com.example.repositorysearch
 
 import org.junit.Test
 

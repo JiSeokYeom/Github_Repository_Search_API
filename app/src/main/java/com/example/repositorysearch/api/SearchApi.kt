@@ -1,6 +1,6 @@
-package com.example.afreecatv.api
+package com.example.repositorysearch.api
 
-import com.example.afreecatv.MainRvData
+import com.example.repositorysearch.MainRvData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
